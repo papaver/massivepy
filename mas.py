@@ -125,7 +125,10 @@ class MasFile(object):
                 attribute_name = self._getAttrbuteName(block_name)
 
                 # set attribute with block
-                setattr(self, attribute_name, cls(block))
+                if block:
+                    setattr(self, attribute_name, cls(block))
+                else:
+                    setattr(self, attribute_name, None)
 
     #--------------------------------------------------------------------------
 
