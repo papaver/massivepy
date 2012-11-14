@@ -54,16 +54,13 @@ class MasFile(object):
 
     #--------------------------------------------------------------------------
 
-    def write(self):
-        """Write the file to the original path it was opened from.
-        """
-        self.write(self._path)
-
-    #--------------------------------------------------------------------------
-
-    def write(self, path):
+    def write(self, path=None):
         """Write the file to the given path.
         """
+
+        # use read path if path not specified
+        if path == None:
+            path = self._path
 
         # open the file and write out scene
         with open(path, 'w') as mas_file:
@@ -115,7 +112,7 @@ class MasFile(object):
             units, scene = scene.partition('\n')[::2]
             self.units   = sscanf(units, MasFile._sUnitsFormatting);
 
-            # write out all of the available blocks
+            # read all of the available blocks
             for block_name, cls in MasFile._sBlocks:
 
                 # extract the block from the file
@@ -137,7 +134,7 @@ class MasFile(object):
         """
 
         # matches entire text to allow extracting block from scene data
-        pattern = "(?P<start>.*)%s\n(?P<block>.*)%s\n(?P<end>.*)"
+        pattern = "(?P<start>.*)%s\n(?P<block>.*)%s\n?(?P<end>.*)"
 
         # use start/end tags for the block extraction
         block_end     = "End %s" % block_name.lower()
@@ -148,7 +145,7 @@ class MasFile(object):
         if match:
 
             # remove indent from block
-            block = re.sub(r"^    ", "", match.group('block'), flags=re.M)
+            block = re.compile(r"^    ", re.M).sub("", match.group('block'))
 
             # compile rest of scene data
             rest  = match.group('start') + match.group('end')

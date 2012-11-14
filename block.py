@@ -29,14 +29,14 @@ class Block(object):
     def _removeIndent(self, block, count=1):
         """Removes 4 space indents from the block.
         """
-        return re.sub(r"^%s" % "    " * count, "", block, flags=re.M)
+        return re.compile(r"^%s" % "    " * count, re.M).sub("", block)
 
     #--------------------------------------------------------------------------
 
     def _addIndent(self, block, count=1):
         """Adds 4 space indents to the block.
         """
-        return re.sub(r"^((?!$))", "    " * count, block, flags=re.M)
+        return re.compile(r"^((?!$))", re.M).sub("    " * count, block)
 
     #--------------------------------------------------------------------------
     # attribute handler methods
