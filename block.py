@@ -57,7 +57,7 @@ class Block(object):
             attribute = re.split('\s', entry)[0]
 
             # add to order
-            if not attribute in order:
+            if attribute.startswith('_') or (not attribute in order):
                 order.append(attribute)
 
             # reformat entry since sscanf doesn't support %g
@@ -156,7 +156,7 @@ class Block(object):
 
             # gather up indented child lines
             children = []
-            while (index < len(lines)) and lines[index].startswith('    '):
+            while (index < len(lines)) and re.match('^(?:\t|    )', lines[index]):
                 children.append(lines[index])
                 index += 1
 
@@ -230,7 +230,7 @@ class Block(object):
 
     #--------------------------------------------------------------------------
 
-    def printAttributes(self, scanf_list):
+    def printAttributes(self, scanf_list, special_list={}):
         """Prints out all of the attributes in the list.
         """
 
@@ -240,6 +240,18 @@ class Block(object):
         # print out all of the attributes
         block = ""
         for attribute in order:
+
+            # seperator
+            if attribute == "_seperator_":
+                block += '\n'
+                continue
+
+            # use special formatter
+            if attribute in special_list:
+                special_block = special_list[attribute]()
+                if special_block != '':
+                    block += special_block + '\n'
+                continue
 
             # only process attributes that exist on the object
             if not hasattr(self, attribute):
@@ -259,4 +271,3 @@ class Block(object):
                 block += self._printAttributePrintf(formatting, value) + "\n"
 
         return block
-
