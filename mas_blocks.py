@@ -64,7 +64,7 @@ class DisplayOptionsBlock(Block):
         "subdiv_quality %d %f",
         "subdivs %d",
         "agent_fields %d",
-        "playbacks %d,"                 # always written out as 1?
+        "playbacks %d",                 # always written out as 1?
         "triggers %d",                  # always written out as 1?
         "wind_display_scale %g",
         "handle_scale %g",
@@ -1386,6 +1386,7 @@ class PlaceGenerator(Block):
         "distance %g",
         "noise    %g %g",
         "angle    %g %g",
+        "grid_angle %g",
         "height   %g %g",
         "flow     %d",
         "terrain  %d",
