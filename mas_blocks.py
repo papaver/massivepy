@@ -1069,6 +1069,7 @@ class SimOptionProcess(Block):
         "brain",
         "cloth",
         "hair",
+        "schedule"
     ]
 
     #--------------------------------------------------------------------------
@@ -1076,9 +1077,10 @@ class SimOptionProcess(Block):
     #--------------------------------------------------------------------------
 
     class kProcess:
-        Brain = 'brain'
-        Cloth = 'cloth'
-        Hair  = 'hair'
+        Brain    = 'brain'
+        Cloth    = 'cloth'
+        Hair     = 'hair'
+        Schedule = 'schedule'
 
     #--------------------------------------------------------------------------
     # methods
@@ -1154,6 +1156,7 @@ class SimOptionOutput(Block):
         "callsheet %s",
         "pics %s",
         "ribs %s %s",      # dynamic_load, run_program, 3dl_dynamic_load
+        "ribs %s",
         "mi %s",
         "vrscene %s",
         "terrain_map %s",
@@ -1375,6 +1378,7 @@ class PlaceGenerator(Block):
     #--------------------------------------------------------------------------
 
     _sBlockFormatting = [
+        "id       %d",
         "name     %s",
         "centre   %g %g %g",
         "normal   %g %g %g",
@@ -1422,7 +1426,7 @@ class PlaceGenerator(Block):
         # parse out the points if they are used
         self.point_data = []
         if self.points:
-            count           = self.points / 2
+            count           = (self.points + 1) / 2
             self.point_data = lines[:count]
             lines           = lines[count:]
 
