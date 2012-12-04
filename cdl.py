@@ -41,16 +41,13 @@ class CdlFile(object):
 
     #--------------------------------------------------------------------------
 
-    def write(self):
-        """Write the file to the original path it was opened from.
-        """
-        self.write(self._path)
-
-    #--------------------------------------------------------------------------
-
-    def write(self, path):
+    def write(self, path=None):
         """Write the file to the given path.
         """
+
+        # use read path if path not specified
+        if path == None:
+            path = self._path
 
         # open the file and write out scene
         with open(path, 'w') as cdl_file:
