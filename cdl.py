@@ -50,7 +50,7 @@ class CdlFile(object):
             path = self._path
 
         # open the file and write out scene
-        with open(path, 'w') as cdl_file:
+        with open(path, 'wb') as cdl_file:
 
             # version
             version = CdlFile._sVersionFormatting % self.version
