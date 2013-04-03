@@ -1,4 +1,22 @@
 #------------------------------------------------------------------------------
+#
+#             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#                     Version 2, December 2004
+#
+#  Copyright (C) 2013 Electronic Dreams <maverick.babylon.drifter@gmail.com>
+#
+#  Everyone is permitted to copy and distribute verbatim or modified
+#  copies of this license document, and changing it is allowed as long
+#  as the name is changed.
+#
+#             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+#
+#   0. You just DO WHAT THE FUCK YOU WANT TO.
+#
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
 # mas_blocks.py - Blocks found in Massive scene files. (.mas)
 #------------------------------------------------------------------------------
 
@@ -763,7 +781,7 @@ class FlowSpline(Block):
     #--------------------------------------------------------------------------
 
     def _parsePoints(self, block):
-        """Points representing spline. 
+        """Points representing spline.
         """
         self.points = []
         for line in block.strip('\n').split('\n'):
@@ -884,7 +902,7 @@ class LaneSpline(Block):
     #--------------------------------------------------------------------------
 
     def _parsePoints(self, block, count):
-        """Points representing spline. 
+        """Points representing spline.
         """
         lines = block.strip('\n').split('\n')
         for line in lines[:count]:
@@ -902,7 +920,7 @@ class LaneSpline(Block):
     #--------------------------------------------------------------------------
 
     def _parseTangents(self, block):
-        """Tangents representing spline. 
+        """Tangents representing spline.
         """
         self.tangents = []
         for line in block.strip('\n').split('\n')[1:]:

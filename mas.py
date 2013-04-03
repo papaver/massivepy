@@ -1,4 +1,22 @@
 #------------------------------------------------------------------------------
+#
+#             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#                     Version 2, December 2004
+#
+#  Copyright (C) 2013 Electronic Dreams <maverick.babylon.drifter@gmail.com>
+#
+#  Everyone is permitted to copy and distribute verbatim or modified
+#  copies of this license document, and changing it is allowed as long
+#  as the name is changed.
+#
+#             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+#
+#   0. You just DO WHAT THE FUCK YOU WANT TO.
+#
+#------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
 # mas.py - Massive scene file. (.mas)
 #------------------------------------------------------------------------------
 
@@ -69,7 +87,7 @@ class MasFile(object):
             version = MasFile._sVersionFormatting % self.version
             mas_file.write("%s\n" % version)
 
-            # units 
+            # units
             units = MasFile._sUnitsFormatting % self.units
             mas_file.write("%s" % units)
 
@@ -78,7 +96,7 @@ class MasFile(object):
 
                 # get blocks attribute name
                 attribute_name = self._getAttrbuteName(block_name)
-                
+
                 # skip empty blocks
                 block = getattr(self, attribute_name)
                 if block == None:
@@ -107,7 +125,7 @@ class MasFile(object):
             # parse out the inital comment
             version, scene = scene.partition('\n')[::2]
             self.version   = sscanf(version, MasFile._sVersionFormatting);
-        
+
             # parse out the units specifier
             units, scene = scene.partition('\n')[::2]
             self.units   = sscanf(units, MasFile._sUnitsFormatting);
@@ -130,7 +148,7 @@ class MasFile(object):
     #--------------------------------------------------------------------------
 
     def _extractBlock(self, block_name, scene):
-        """Parses a block of data from the scene data.  
+        """Parses a block of data from the scene data.
         """
 
         # matches entire text to allow extracting block from scene data
