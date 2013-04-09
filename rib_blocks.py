@@ -39,7 +39,7 @@ class AntBlock(object):
 
     _sPattern = '(?P<type>\w+)\s"(?P<mode>\w+)"\s' \
                 '\["(?P<program>[^\s]+)"\s"(?P<id>\d+)\s(?P<cdl>[^\s]+)\s(?P<apf>[^\s]+)\s' \
-                '(?P<frame>\d+)\s(?P<vars>.+?)"]\s(?P<transform>\[.+?])'
+                '(?P<frame>-?\d+)\s(?P<vars>.+?)"]\s(?P<transform>\[.+?])'
 
     _sTransformFormatting = "[%g %g %g %g %g %g]"
 
@@ -60,7 +60,7 @@ class AntBlock(object):
         self.id      = int(match.group('id'))
         self.cdl     = match.group('cdl')
         self.apf     = match.group('apf')
-        self.frame   = match.group('frame')
+        self.frame   = int(match.group('frame'))
 
         # parse variable data
         variableData = match.group('vars').split(' ')
