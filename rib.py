@@ -20,6 +20,8 @@
 # rib.py - Massive rib file. (.rib)
 #------------------------------------------------------------------------------
 
+import glob
+
 from rib_blocks import *
 
 #------------------------------------------------------------------------------
@@ -33,6 +35,54 @@ class RibFile(object):
     #--------------------------------------------------------------------------
     # statics
     #--------------------------------------------------------------------------
+
+    def GetSimFrameSet(ribFile):
+        """Find all the associated files related to the ribFile.  It is assumed
+        the rib file is part of the set of per frame files of the format
+        /*/*/x.frame.y
+        """
+
+        ribGlob    = re.sub("\.\d+\.", ".*.", ribFile._path)
+        ribPattern = ribFile._path.replace('\\', '\\\\')
+        ribPattern = re.sub("\.\d+\.", ".\d+.", ribPattern)
+        paths      = filter(lambda p: re.match(ribPattern, p), glob.glob(ribGlob))
+        return paths
+
+    #--------------------------------------------------------------------------
+
+    def TransferVariablesToRibSet(ribFile, ribPaths, variables):
+        """Exports the variables present in the rib file to the rest of the
+        rib files contained in the set.  Note the current file will only be
+        saved if its part of the glob set.
+
+        variables: dictionary containing keys with ant ids associated with a
+          list of variables to transfer.
+        """
+
+        # nothing to be done if no variable data
+        if variables == None:
+            return
+
+        # transfer the data to all paths provided
+        for ribPath in ribPaths:
+
+            # save current file if found
+            if ribPath == ribFile._path:
+                ribFile.write()
+                continue
+
+            # parse the rib file
+            ribFileInSet = RibFile(ribPath)
+
+            # it is assumed that the rib files belong to the same set hence
+            #  share the same and count and order
+            for ant, setAnt in zip(ribFiles.ants, ribFileInSet.ants):
+                if ant.id in variables:
+                    for variable in variables[ant.id]:
+                        setAnt.variables[variable] = ant.variables[variable]
+
+            # write out the set file
+            ribFileInSet.write()
 
     #--------------------------------------------------------------------------
     # methods
