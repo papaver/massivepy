@@ -1256,7 +1256,7 @@ class PlaceBlock(Block):
     #--------------------------------------------------------------------------
 
     def __str__(self):
-        groups      = "\n\n".join(map(str, self.groups))
+        groups      = "\n".join(map(str, self.groups))
         generators  = "\n".join(map(str, self.generators))
         attributes  = self.printAttributes(PlaceBlock._sBlockFormatting)
         non_process = self._printNonProcess() if self.non_process else ""
@@ -1449,7 +1449,8 @@ class PlaceGenerator(Block):
             lines           = lines[count:]
 
         # this line should be the group line
-        self.group = sscanf(lines[0], "groups [%d %d]")
+        groups     = re.findall("\[[^\]]+]", lines[0].partition(' ')[-1])
+        self.group = map(lambda g: sscanf(g, "[%d %f]"), groups)
 
     #--------------------------------------------------------------------------
 
@@ -1457,8 +1458,8 @@ class PlaceGenerator(Block):
         header     = "generator %s" % self.type
         attributes = self.printAttributes(PlaceGenerator._sBlockFormatting)
         points     = "\n".join(self.point_data + [""]) if self.points else ""
-        group      = "groups [%d %d]" % self.group
-        block      = "%s%s%s\n" % (attributes, points, group)
+        groups     = "groups %s" % " ".join(map(lambda g: "[%d %g]" % g, self.groups))
+        block      = "%s%s%s\n" % (attributes, points, groups)
         return "%s\n%send generator" % (header, self._addIndent(block))
 
     #--------------------------------------------------------------------------
