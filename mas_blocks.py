@@ -20,6 +20,7 @@
 # mas_blocks.py - Blocks found in Massive scene files. (.mas)
 #------------------------------------------------------------------------------
 
+import itertools
 import os
 import re
 
@@ -1286,12 +1287,12 @@ class PlaceBlock(Block):
     def _parseNonProcess(self, block):
         """Collate all of the non process ids in the scene.
         """
-        self.non_process = re.findall("\d+", block)
+        self.non_process = self._parseIds(self._removeIndent(block.partition('\n')[-1]))
 
     #--------------------------------------------------------------------------
 
     def _printNonProcess(self):
-        ids = " ".join(self.non_process)
+        ids = self._printIds(self.non_process)
         return "non_process\n%s\nend non_process" % self._addIndent(ids)
 
     #--------------------------------------------------------------------------
@@ -1299,13 +1300,29 @@ class PlaceBlock(Block):
     def _parseReplay(self, block):
         """Collate all of the replay ids in the scene.
         """
-        self.replay = re.findall("\d+", block)
+        self.replay = self._parseIds(self._removeIndent(block.partition('\n')[-1]))
 
     #--------------------------------------------------------------------------
 
     def _printReplay(self):
-        ids = " ".join(self.replay)
+        ids = self._printIds(self.replay)
         return "replay\n%s\nend replay" % self._addIndent(ids)
+
+    #--------------------------------------------------------------------------
+
+    def _parseIds(self, block):
+        ranges    = [r.partition('-')[0::2] for r in block.split(' ')]
+        makeRange = lambda (s, f): range(int(s), int(s)+1 if f == '' else int(f)+1)
+        ids       = list(itertools.chain(*map(makeRange, ranges)))
+        return ids
+
+    #--------------------------------------------------------------------------
+
+    def _printIds(self, ids):
+        isInRange = lambda n, c=itertools.count(): n - next(c)
+        ranges    = [list(g) for _,g in itertools.groupby(sorted(ids), isInRange)]
+        makeRange = lambda l: str(l[0]) if len(l) < 2 else "%s-%s" % (l[0], l[-1])
+        return " ".join(map(makeRange, ranges))
 
 #------------------------------------------------------------------------------
 # class PlaceGroup
